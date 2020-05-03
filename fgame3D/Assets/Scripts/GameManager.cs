@@ -35,8 +35,4 @@ public class GameManager : MonoBehaviour
         ScoreManager.instance.StopScore();
         UIManager.instance.GameOver();
     }
-    public void GameIsPaused()
-    {
-        
-    }
 }

@@ -9,9 +9,10 @@ public class Ball : MonoBehaviour
     Rigidbody rb;
     public bool gameStarted;
     public bool gameOver;
-    public bool gameIsPaused;
+    public bool gameIsPaused; 
     public static Ball instance;
     bool right;
+    public bool startMoving;
     // Start is called before the first frame updatep
 
     void Awake()
@@ -29,14 +30,19 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!gameStarted )
+        if (!startMoving)
         {
-            if (Input.GetMouseButtonDown(0) )
+            if (gameStarted)
             {
-                rb.velocity = new Vector3(speed, 0, 0);
-                gameStarted = true;
-                GameManager.instance.GameStarted();
+              // if (Input.GetMouseButtonDown(0))
+               // {
+                    rb.velocity = new Vector3(speed, 0, 0);
+                 //   gameStarted = true;
+                    GameManager.instance.GameStarted();
+                startMoving = true;
+             //  }
             }
+             
         }
 
         Debug.DrawRay(transform.position, Vector3.down, Color.red);
@@ -83,20 +89,51 @@ public class Ball : MonoBehaviour
     }
     public void GameIsResumed()
     {
-        PlatformSpawner.instance.ResumeSpawning();
-        if (right)
+        if (gameStarted)
         {
-            rb.velocity = new Vector3(0, 0, speed);
+            PlatformSpawner.instance.ResumeSpawning();
+            if (right)
+            {
+                rb.velocity = new Vector3(0, 0, speed);
+            }
+            if (!right)
+            {
+                rb.velocity = new Vector3(speed, 0, 0);
+            }
+            UIManager.instance.pauseButton.SetActive(true);
+            gameIsPaused = false;
         }
-        if (!right)
+        else
         {
-            rb.velocity = new Vector3(speed, 0, 0);
+            UIManager.instance.startPanel.SetActive(true);
+            UIManager.instance.startButton.SetActive(true);
         }
-        gameIsPaused = false;
         
     }
     public void GameWillBeResumed()
     {
         Invoke("GameIsResumed", 0.5f);
+    }
+    public void StartGame()
+    {
+        gameStarted = true;
+    }
+    public void GameWillBeExit()
+    {
+        if (rb.velocity.x > 0)
+        {
+            right = true;
+        }
+        if (rb.velocity.z > 0)
+        {
+            right = false;
+        }
+        rb.velocity = new Vector3(0, 0, 0);
+        PlatformSpawner.instance.PauseSpawning();
+        gameIsPaused = true;
+    }
+    public void GameWontExit()
+    {
+        GameWillBeResumed();
     }
 }

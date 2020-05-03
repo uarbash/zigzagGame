@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     public GameObject pausePanel;
     public GameObject pauseButton;
+    public GameObject startButton;
+    public GameObject onExitPanel;
     void Awake()
     {
         if (instance == null)
@@ -30,7 +32,14 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            onExitPanel.SetActive(true);
+            Ball.instance.GameWillBeExit();
+            startPanel.SetActive(false);
+            startButton.SetActive(false);
+            pauseButton.SetActive(false);
+        }
     }
 
     public void GameStart()
@@ -39,6 +48,7 @@ public class UIManager : MonoBehaviour
         tapText.SetActive(false);
         startPanel.GetComponent<Animator>().Play("PanelAnimation");
         pauseButton.SetActive(true);
+        startButton.SetActive(false);
 
     }
     public void GameOver()
@@ -63,5 +73,16 @@ public class UIManager : MonoBehaviour
     {
         pauseButton.SetActive(true);
         pausePanel.SetActive(false);
+    }
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+    public void DontEXitGame()
+    {
+        onExitPanel.SetActive(false);
+        Ball.instance.GameWontExit();
+        
+
     }
 }
