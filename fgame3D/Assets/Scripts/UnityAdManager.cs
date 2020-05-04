@@ -42,4 +42,8 @@ public class UnityAdManager : MonoBehaviour
             return;
         }
     }
+    public void ShowAdIn3()
+    {
+        Invoke("ShowAd" , 1f);
+    }
 }

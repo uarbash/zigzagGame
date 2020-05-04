@@ -13,11 +13,13 @@ public class Ball : MonoBehaviour
     public static Ball instance;
     bool right;
     public bool startMoving;
+    LineRenderer lr;
     // Start is called before the first frame updatep
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        lr = GetComponent<LineRenderer>();
         if(instance == null)
         {
             instance = this;
@@ -27,7 +29,7 @@ public class Ball : MonoBehaviour
     {
     }
 
-    // Update is called once per frame
+    // Update is called once per 
     void Update()
     {
         if (!startMoving)
@@ -45,32 +47,49 @@ public class Ball : MonoBehaviour
              
         }
 
+
         Debug.DrawRay(transform.position, Vector3.down, Color.red);
 
-        if ( !Physics.Raycast(transform.position, Vector3.down, 1f) && !gameOver)
+        if ( !Physics.Raycast(transform.position, Vector3.down, 30f) && !gameOver)
         {
             gameOver = true;
             rb.velocity = new Vector3(0, -25f, 0);
             Camera.main.GetComponent<CameraFall>().gameOver = true;
             PlatformSpawner.instance.gameOver = true;
             GameManager.instance.GameOver();
+            lr.SetPosition(1, new Vector3(transform.position.x, 0f, transform.position.z));
+        }
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            rb.AddForce(0, 25 , 0);
         }
 
         if (Input.GetMouseButtonDown(0) && !gameOver && !gameIsPaused)
         {
             SwitchDirection();
         }
+        if( !gameOver)
+        {
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, new Vector3(transform.position.x, -20f, transform.position.z));
+        }
+
+
     }
     void SwitchDirection()
     {
+        
+
         if (rb.velocity.z > 0)
         {
             rb.velocity = new Vector3(speed, 0, 0);
+
         }
         else if (rb.velocity.x > 0)
         {
             rb.velocity = new Vector3(0, 0, speed);
         }
+
     }
     public void GameIsPaused()
     {

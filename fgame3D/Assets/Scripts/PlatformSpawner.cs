@@ -11,6 +11,8 @@ public class PlatformSpawner : MonoBehaviour
     Vector3 lastPos;
     float size;
     public bool gameOver;
+    public GameObject xCapsule;
+    public GameObject zCapsule;
     public static PlatformSpawner instance;
     //Methods 
 
@@ -58,10 +60,14 @@ public class PlatformSpawner : MonoBehaviour
         
         Instantiate(plattform, pos, Quaternion.identity);
 
-        int random = Random.Range(0, 4);
-        if( random > 2)
+        int random = Random.Range(0, 10);
+        if( random < 2)
         {
             Instantiate(diamond, new Vector3(pos.x, pos.y + 1, pos.z), diamond.transform.rotation);
+        }
+        if(random > 8)
+        {
+            Instantiate(xCapsule, new Vector3(pos.x, pos.y + 1, pos.z), xCapsule.transform.rotation);
         }
         
     }
@@ -71,10 +77,14 @@ public class PlatformSpawner : MonoBehaviour
         pos.z += size;
         lastPos = pos;
         Instantiate(plattform, pos,Quaternion.identity);
-        int random = Random.Range(0, 4);
-        if (random > 2)
+        int random = Random.Range(0, 10);
+        if (random < 2)
         {
             Instantiate(diamond, new Vector3(pos.x, pos.y + 1, pos.z), diamond.transform.rotation);
+        }
+        if (random > 8)
+        {
+            Instantiate(zCapsule, new Vector3(pos.x, pos.y + 1, pos.z), zCapsule.transform.rotation);
         }
     }
     void SpawnPlatform()

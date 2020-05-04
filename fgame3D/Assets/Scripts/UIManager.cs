@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame updat
+    // Start is called before the first frame upd
     public GameObject startPanel;
     public GameObject gameOverPanel;
     public Text score;
@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     public GameObject pauseButton;
     public GameObject startButton;
     public GameObject onExitPanel;
+    public Text currentScore;
+    public GameObject showCurrentScore;
     void Awake()
     {
         if (instance == null)
@@ -29,9 +31,10 @@ public class UIManager : MonoBehaviour
         highScore1.text = "High Score : "+PlayerPrefs.GetInt("highScore").ToString();
     }
 
-    // Update is called once per frame
+    // Update is called once per 
     void Update()
     {
+        currentScore.text = PlayerPrefs.GetInt("currentScore").ToString();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             onExitPanel.SetActive(true);
@@ -40,6 +43,7 @@ public class UIManager : MonoBehaviour
             startButton.SetActive(false);
             pauseButton.SetActive(false);
         }
+
     }
 
     public void GameStart()
@@ -49,6 +53,7 @@ public class UIManager : MonoBehaviour
         startPanel.GetComponent<Animator>().Play("PanelAnimation");
         pauseButton.SetActive(true);
         startButton.SetActive(false);
+        showCurrentScore.SetActive(true);
 
     }
     public void GameOver()
@@ -57,7 +62,8 @@ public class UIManager : MonoBehaviour
         score.text = PlayerPrefs.GetInt("score").ToString();
         highScore2.text = PlayerPrefs.GetInt("highScore").ToString();
         gameOverPanel.SetActive(true);
-        
+        showCurrentScore.SetActive(false);
+
 
     }
     public void Reset()
