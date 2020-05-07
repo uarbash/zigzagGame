@@ -30,8 +30,11 @@ public class ScoreManager : MonoBehaviour
     }
     void IncreaseScore()
     {
-        score += 1;
-        PlayerPrefs.SetInt("currentScore", score);
+        if (PlayerPrefs.GetInt("pause") == 0)
+        {
+            score += 1;
+            PlayerPrefs.SetInt("currentScore", score);
+        }   
     }
     public void StartScore()
     {

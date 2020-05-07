@@ -57,9 +57,9 @@ public class Ball : MonoBehaviour
             Camera.main.GetComponent<CameraFall>().gameOver = true;
             PlatformSpawner.instance.gameOver = true;
             GameManager.instance.GameOver();
-            lr.SetPosition(1, new Vector3(transform.position.x, 0f, transform.position.z));
+            lr.SetPosition(1, new Vector3(transform.position.x, transform.position.y, transform.position.z));
         }
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.Mouse0 ) && gameStarted && !gameIsPaused)
         {
             rb.AddForce(0, 25 , 0);
         }
@@ -70,6 +70,7 @@ public class Ball : MonoBehaviour
         }
         if( !gameOver)
         {
+
             lr.SetPosition(0, transform.position);
             lr.SetPosition(1, new Vector3(transform.position.x, -20f, transform.position.z));
         }

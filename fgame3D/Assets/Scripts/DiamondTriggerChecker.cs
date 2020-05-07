@@ -12,7 +12,7 @@ public class DiamondTriggerChecker : MonoBehaviour
         
     }
 
-    // Update is called once per frame
+    // Update is called once 
     void Update()
     {
         if (!Physics.Raycast(transform.position, Vector3.down, 10f))
@@ -25,7 +25,14 @@ public class DiamondTriggerChecker : MonoBehaviour
     {
         if (col.gameObject.tag == "Ball")
         {
-            GameObject.Find("CurrentScore").GetComponent<Animator>().Play("ScoreBonus");
+            //GameObject.Find("CurrentScore").GetComponent<Animator>().Play("ScoreBonus");
+            ScoreManager.instance.score += 10;
+            UIManager.instance.currentScore.GetComponent<Animator>().enabled = false;
+            UIManager.instance.currentScore.GetComponent<Animator>().enabled = true;
+            UIManager.instance.currentScore.GetComponent<Animator>().Play("ScoreBonus");
+            UIManager.instance.currentScore.GetComponent<Animator>().Play("Any State");
+
+
             Destroy(transform.gameObject);
             GameObject storedPartical = Instantiate(Partical, transform.position, Quaternion.identity);
             Destroy(storedPartical, 1f);
